@@ -7,7 +7,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/storybookjs/storybook-addon-kit"
+    "url": "https://github.com/button-inc/storybook-progressive-enhancement-addon"
   },
   "author": "Jon Langlois",
   "license": "MIT",
