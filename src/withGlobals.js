@@ -11,8 +11,8 @@ const PARAM_KEY = "details";
 
 export const withGlobals = (StoryFn, context) => {
   const [{ allEnabled, cssOnly }, updateGlobals] = useGlobals();
-  const details = useParameter(PARAM_KEY, null);
-  const {allEnabledDescription, htmlOnlyDescription, cssEnabledDescription} = details;
+  const details = useParameter(PARAM_KEY, {});
+  const {allEnabledDescription = '', htmlOnlyDescription = '', cssEnabledDescription = ''} = details;
 
   if (allEnabled || allEnabled === undefined) {
     return <Template details={details} peDescription={allEnabledDescription}>{StoryFn()}</Template>

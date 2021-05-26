@@ -1,6 +1,6 @@
 {
   "name": "@button-inc/storybook-progressive-enhancement-addon",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Toggle between progressivly enhanced states",
   "keywords": [
     "storybook-addons"

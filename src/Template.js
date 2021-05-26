@@ -5,8 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { CopyBlock, dracula } from "react-code-blocks";
 
 function Template({ details, children, peDescription }) {
-  const { props, title, description, usageCode } = details;
-  console.log("description is", description);
+  const { props = [], title = '', description = '', usageCode = '' } = details;
 
   return (
     <Container>
