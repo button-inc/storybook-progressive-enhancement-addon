@@ -4,6 +4,7 @@ import { ADDON_ID, TOOL_ID, PANEL_ID } from "../constants";
 import { Tool } from "../Tool";
 import { Panel } from "../Panel";
 import { Tab } from "../Tab";
+import { makeDecorator } from '@storybook/addons';
 
 // Register the addon
 addons.register(ADDON_ID, () => {
@@ -14,23 +15,22 @@ addons.register(ADDON_ID, () => {
     match: ({ viewMode }) => !!(viewMode && viewMode.match(/^(story|docs)$/)),
     render: Tool,
   });
+});
 
-  // Register the panel
-  addons.add(PANEL_ID, {
-    type: types.PANEL,
-    title: "My addon",
-    match: ({ viewMode }) => viewMode === "story",
-    render: Panel,
-  });
 
-  // Register the tab
-  addons.add(PANEL_ID, {
-    type: types.TAB,
-    title: "My addon",
-    //👇 Checks the current route for the story
-    route: ({ storyId }) => `/myaddon/${storyId}`,
-    //👇 Shows the Tab UI element in myaddon view mode
-    match: ({ viewMode }) => viewMode === "myaddon",
-    render: Tab,
-  });
+export const decorator = makeDecorator({
+  name: 'withSomething',
+  parameterName: 'myAddon',
+  wrapper: (storyFn, context, { parameters }) => {
+    console.log(parameters)
+    // Do something with `parameters`, which are set via { something: ... }
+
+    // Note you may alter the story output if you like. 
+    // Although generally that's not advised.
+    const wrapperStory = () => <div>
+      <h1>HIHIHI</h1>
+      {storyFn(context)}
+    </div>
+    return wrapperStory();
+  }
 });

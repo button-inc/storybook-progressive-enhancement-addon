@@ -1,39 +1,28 @@
 /* eslint-env browser */
-import { useEffect, useGlobals } from "@storybook/addons";
+import { useEffect, useMemo, useGlobals } from '@storybook/addons';
+import {HtmlWithCssWrapper, HtmlOnlyWrapper} from './wrappers';
+import { clearStyles, addOutlineStyles } from './helpers';
+import outlineCSS from './outlineCSS';
+import React from 'react'
 
 export const withGlobals = (StoryFn, context) => {
-  const [{ myAddon }, updateGlobals] = useGlobals();
-  // Is the addon being used in the docs panel
-  const isInDocs = context.viewMode === "docs";
+  const [{ allEnabled, cssOnly, htmlOnly }, updateGlobals] = useGlobals();
 
-  useEffect(() => {
-    // Execute your side effect here
-    // For example, to manipulate the contents of the preview
-    const selectorId = isInDocs ? `#anchor--${context.id} .docs-story` : `root`;
+  console.log(allEnabled, cssOnly, htmlOnly)
 
-    displayToolState(selectorId, { myAddon, isInDocs });
-  }, [myAddon]);
+  if (allEnabled) return StoryFn()
 
-  return StoryFn();
-};
-
-function displayToolState(selector, state) {
-  const rootElement = document.getElementById(selector);
-  let preElement = rootElement.querySelector("pre");
-
-  if (!preElement) {
-    preElement = document.createElement("pre");
-    preElement.style.setProperty("margin-top", "2rem");
-    preElement.style.setProperty("padding", "1rem");
-    preElement.style.setProperty("background-color", "#eee");
-    preElement.style.setProperty("border-radius", "3px");
-    preElement.style.setProperty("max-width", "600px");
-    rootElement.appendChild(preElement);
+  if (cssOnly) {
+    return (
+      <HtmlWithCssWrapper>
+        {StoryFn()}
+      </HtmlWithCssWrapper>
+    )
   }
 
-  preElement.innerText = `This snippet is injected by the withGlobals decorator.
-It updates as the user interacts with the ⚡ tool in the toolbar above.
-
-${JSON.stringify(state, null, 2)}
-`;
-}
+  return (
+    <HtmlOnlyWrapper>
+      {StoryFn()}
+    </HtmlOnlyWrapper>
+  ) 
+};
