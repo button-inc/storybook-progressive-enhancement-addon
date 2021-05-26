@@ -10,7 +10,7 @@ export const withGlobals = (StoryFn, context) => {
 
   console.log(allEnabled, cssOnly, htmlOnly)
 
-  if (allEnabled) return StoryFn()
+  if (allEnabled || allEnabled === undefined) return StoryFn()
 
   if (cssOnly) {
     return (

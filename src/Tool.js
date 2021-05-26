@@ -2,19 +2,10 @@ import React, { useCallback } from "react";
 import { useGlobals } from "@storybook/api";
 import { Icons, IconButton } from "@storybook/components";
 import { TOOL_ID } from "./constants";
-import { useEffect } from "@storybook/client-api";
+import HtmlLogo from './components/htmlLogo'
 
 export const Tool = () => {
   const [{ allEnabled, cssOnly, htmlOnly }, updateGlobals] = useGlobals();
-
-  // There must be a better way to have default globals, but havent found it
-  // useEffect(() => {
-  //   updateGlobals({
-  //     allEnabled: true,
-  //     cssOnly: false,
-  //     htmlOnly: false,
-  //   })
-  // }, [])
 
   const toggleAllEnabled = useCallback(
     () =>
@@ -23,7 +14,7 @@ export const Tool = () => {
         cssOnly: false,
         htmlOnly: allEnabled
       }),
-    [allEnabled]
+    [allEnabled, cssOnly, htmlOnly]
   );
   
   const toggleCssEnabled = useCallback(
@@ -33,7 +24,7 @@ export const Tool = () => {
         allEnabled: false,
         htmlOnly: cssOnly
       }),
-    [cssOnly]
+    [cssOnly, cssOnly, htmlOnly]
   );
   
   const toggleHtmlEnabled = useCallback(
@@ -43,18 +34,19 @@ export const Tool = () => {
         cssOnly: false,
         allEnabled: false,
       }),
-    [htmlOnly]
+    [htmlOnly, cssOnly, htmlOnly]
   );
 
   return (
     <>
       <IconButton
         key={TOOL_ID}
-        active={allEnabled}
+        active={allEnabled === undefined ? true : allEnabled}
         title="Apply outlines to the preview"
         onClick={toggleAllEnabled}
       >
-        <Icons icon="outline" />
+        {/* <HtmlLogo></HtmlLogo> */}
+        <p>HTML + JS + CSS</p>
       </IconButton>
       <IconButton
         key={`${TOOL_ID}/2`}
@@ -62,7 +54,7 @@ export const Tool = () => {
         title="Apply outlines to the preview"
         onClick={toggleCssEnabled}
       >
-        <Icons icon="outline" />
+        <p>HTML+ CSS</p>
       </IconButton>
       <IconButton
         key={`${TOOL_ID}/3`}
@@ -70,7 +62,7 @@ export const Tool = () => {
         title="Apply outlines to the preview"
         onClick={toggleHtmlEnabled}
       >
-        <Icons icon="outline" />
+        <p>HTML Only</p>
       </IconButton>
     </>
   );
