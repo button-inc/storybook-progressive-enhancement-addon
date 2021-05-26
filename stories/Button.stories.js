@@ -4,6 +4,26 @@ import { Button } from "./Button";
 export default {
   title: "Example/Button",
   component: Button,
+  parameters: {
+    details: {
+      title: "Button",
+      description: "The base description that always shows up",
+      allEnabledDescription: 'Description to show with all fields enabled',
+      cssEnabledDescription: 'Description to show with CSS enabled',
+      htmlOnlyDescription: 'Description to show with just html enabled',
+      usageCode: `
+        import component from @button-inc/component
+        <Component x={true}/>
+        `,
+      props: [
+        {
+          name: 'size',
+          type: 'string',
+          description: 'size of the element'
+        }
+      ]
+    },
+  },
 };
 
 const Template = (args) => <Button {...args} />;
@@ -22,7 +42,7 @@ Secondary.args = {
 export const Large = Template.bind({});
 Large.args = {
   size: "large",
-  label: "Button",
+  label: "Button",  
 };
 
 export const Small = Template.bind({});

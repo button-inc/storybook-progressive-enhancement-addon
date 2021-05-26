@@ -1,28 +1,33 @@
 /* eslint-env browser */
-import { useEffect, useMemo, useGlobals } from '@storybook/addons';
-import {HtmlWithCssWrapper, HtmlOnlyWrapper} from './wrappers';
-import { clearStyles, addOutlineStyles } from './helpers';
-import outlineCSS from './outlineCSS';
-import React from 'react'
+import {
+  useGlobals,
+  useParameter,
+} from "@storybook/addons";
+import { HtmlWithCssWrapper, HtmlOnlyWrapper } from "./wrappers";
+import Template from "./Template";
+import React from "react";
+
+const PARAM_KEY = "details";
 
 export const withGlobals = (StoryFn, context) => {
-  const [{ allEnabled, cssOnly, htmlOnly }, updateGlobals] = useGlobals();
+  const [{ allEnabled, cssOnly }, updateGlobals] = useGlobals();
+  const details = useParameter(PARAM_KEY, null);
+  const {allEnabledDescription, htmlOnlyDescription, cssEnabledDescription} = details;
 
-  console.log(allEnabled, cssOnly, htmlOnly)
-
-  if (allEnabled || allEnabled === undefined) return StoryFn()
+  if (allEnabled || allEnabled === undefined) {
+    return <Template details={details} peDescription={allEnabledDescription}>{StoryFn()}</Template>
+  }
 
   if (cssOnly) {
     return (
-      <HtmlWithCssWrapper>
-        {StoryFn()}
-      </HtmlWithCssWrapper>
-    )
-  }
+      <Template details={details} peDescription={cssEnabledDescription}>
+        <HtmlWithCssWrapper>{StoryFn()}</HtmlWithCssWrapper>
+      </Template>
+    )}
 
   return (
-    <HtmlOnlyWrapper>
-      {StoryFn()}
-    </HtmlOnlyWrapper>
-  ) 
+    <Template details={details} peDescription={htmlOnlyDescription}>
+      <HtmlOnlyWrapper>{StoryFn()}</HtmlOnlyWrapper>
+    </Template>
+  )
 };
